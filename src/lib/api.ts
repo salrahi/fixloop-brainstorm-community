@@ -39,7 +39,7 @@ export async function fetchFeed(opts: { category?: string; sort: SortValue; page
 
 export async function searchQuestions(term: string, category?: string) {
   const { data, error } = await supabase
-    .rpc("search_questions", { _q: term, _category: category ?? undefined })
+    .rpc("search_questions", category ? { _q: term, _category: category } : { _q: term })
     .select(Q_SELECT);
   if (error) throw error;
   return (data ?? []) as unknown as QuestionRow[];
